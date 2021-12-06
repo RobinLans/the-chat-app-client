@@ -4,7 +4,8 @@ import Chat from "./components/Chat";
 import "./App.css";
 
 const socket = io.connect(
-  import.meta.env.VITE_HERO_URL || import.meta.env.VITE_DEV_URL
+  // import.meta.env.VITE_HERO_URL || import.meta.env.VITE_DEV_URL
+  "https://the-chat-app-dj.herokuapp.com/"
 );
 
 function App() {
