@@ -9,7 +9,7 @@
 }
 
 .buttons {
-  @apply border-8 text-primary text-xl font-semibold border-primary w-20 h-12 my-2  hover:bg-secondary  active:bg-primary hover:text-white;
+  @apply border-8 text-primary text-xl font-semibold border-primary h-12   hover:bg-secondary  active:bg-primary hover:text-white;
 }
 
 .chatMenuTextBlack {

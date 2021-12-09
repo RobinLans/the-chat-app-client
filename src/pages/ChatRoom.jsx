@@ -1,14 +1,15 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import Message from "../components/Message";
 import { roomAndUserCtx } from "../Context";
 
 function ChatRoom() {
   const params = useParams();
+  const scrollRef = useRef();
   const { roomAndUser } = useContext(roomAndUserCtx);
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
-  console.log(params.id);
-  console.log(roomAndUser);
+  const [users, setUsers] = useState([]);
 
   async function sendMessage() {
     if (currentMessage === "") return;
@@ -17,9 +18,9 @@ function ChatRoom() {
       username: roomAndUser.username,
       message: currentMessage,
       time:
-        new Date(Date.now()).getHours() +
+        `${new Date().getHours()}`.padStart(2, 0) +
         ":" +
-        new Date(Date.now()).getMinutes(),
+        `${new Date().getMinutes()}`.padStart(2, 0),
     };
 
     await roomAndUser.socket.emit("send_message", messageData);
@@ -36,7 +37,31 @@ function ChatRoom() {
         return [...curMes, data];
       });
     });
+    roomAndUser.socket.on("get_users", (data) => {
+      console.log(data);
+      setUsers((prev) => {
+        return [...prev, data.username];
+      });
+    });
   }, [roomAndUser.socket]);
+
+  useEffect(() => {
+    const info = {
+      username: roomAndUser.username,
+      room: roomAndUser.roomName,
+    };
+
+    setUsers((prev) => [...prev, roomAndUser.username]);
+    roomAndUser.socket.emit("new_user", info);
+  }, []);
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messageList]);
+
+  function handleKeyPress(e) {
+    if (e.key === "Enter") sendMessage();
+  }
 
   return (
     <div className="h-full flex justify-center items-center">
@@ -44,19 +69,18 @@ function ChatRoom() {
         <h1 className="absolute -top-14 text-3xl font-semibold">
           {roomAndUser.roomName}
         </h1>
-        <div className="relative flex flex-col h-full w-3/4">
-          <div className=" h-full w-full">
-            {messageList.map((messageContent) => {
-              return (
-                <div className="flex flex-col">
-                  <div className="flex">
-                    <p>{messageContent.username}</p>
-                    <p>{messageContent.time}</p>
-                  </div>
-                  <p>{messageContent.message}</p>
-                </div>
-              );
-            })}
+        <div className="relative flex flex-col h-full w-full">
+          <div className="h-full w-full p-2 overflow-auto">
+            {messageList.map((messageContent, i) => (
+              <div ref={scrollRef}>
+                <Message
+                  message={messageContent.message}
+                  time={messageContent.time}
+                  key={i}
+                  username={messageContent.username}
+                />
+              </div>
+            ))}
           </div>
           <input
             type="text"
@@ -66,15 +90,20 @@ function ChatRoom() {
             onChange={(e) => {
               setCurrentMessage(e.target.value);
             }}
+            onKeyPress={handleKeyPress}
           />
           <button
-            className="absolute m-0 buttons bottom-1 right-1"
+            className="absolute buttons w-20 bottom-1 xl:bottom-1.5 right-1"
             onClick={sendMessage}
           >
             Send
           </button>
         </div>
-        <div className="h-full w-1/4 border-l-extraThick border-black"></div>
+        {/* <div className="h-full w-1/4 border-l-extraThick border-black p-2 overflow-auto">
+          {users.map((user) => (
+            <p className="text-2xl font-semibold my-2">{user}</p>
+          ))}
+        </div> */}
       </div>
     </div>
   );

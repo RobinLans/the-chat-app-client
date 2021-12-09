@@ -37,7 +37,7 @@ function Home() {
                 setUsername(e.target.value);
               }}
             />
-            <button className="buttons" onClick={goToMenu}>
+            <button className="buttons w-20" onClick={goToMenu}>
               Join
             </button>
           </div>

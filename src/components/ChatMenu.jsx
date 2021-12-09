@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import Rooms from "./Rooms";
 import { roomAndUserCtx } from "../Context";
 
@@ -18,6 +18,11 @@ function ChatMenu() {
     },
   ]);
   const { roomAndUser } = useContext(roomAndUserCtx);
+  const socket = useRef(roomAndUser.socket);
+
+  console.log(socket);
+
+  useEffect(() => {});
 
   console.log(roomAndUser);
 
@@ -33,15 +38,15 @@ function ChatMenu() {
             <Rooms room={room.name} key={room.id} id={room.id} />
           ))}
         </div>
-        <button className="buttons text-lg w-40 ">New Chat Room</button>
+        {/* <button className="buttons text-lg w-44 mt-2 ">New Chat Room</button> */}
       </div>
-      <div className="CMcontainers">
+      {/* <div className="CMcontainers">
         <div className="flex">
           <p className="chatMenuTextBlack">Talk in</p>
           <p className="chatMenuTextPink">Private</p>
         </div>
         <div className="CMBoxes"></div>
-      </div>
+      </div> */}
     </div>
   );
 }
