@@ -65,7 +65,7 @@ function ChatRoom() {
 
   return (
     <div className="h-full flex justify-center items-center">
-      <div className="relative h-chatSmall w-chatSmall xl:h-chatBig xl:w-chatBig border-black border-veryThick flex justify-center">
+      <div className="relative h-chatSmall w-chatSmall 2xl:h-chatBig 2xl:w-chatBig border-black border-veryThick flex justify-center">
         <h1 className="absolute -top-14 text-3xl font-semibold">
           {roomAndUser.roomName}
         </h1>
