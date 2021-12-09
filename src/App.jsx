@@ -1,49 +1,41 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { roomAndUserCtx } from "./Context";
+import routes from "./routes";
 import io from "socket.io-client";
-import Chat from "./components/Chat";
-import "./App.css";
 
 const socket = io.connect(
-  // import.meta.env.VITE_HERO_URL || import.meta.env.VITE_DEV_URL
-  "https://the-chat-app-dj.herokuapp.com/"
+  "http://localhost:4000"
+  // "https://the-chat-app-dj.herokuapp.com/"
 );
 
 function App() {
-  const [username, setUsername] = useState("");
-  const [room, setRoom] = useState("");
-  const [showChat, setShowChat] = useState(false);
+  const navigate = useNavigate();
+  const [roomAndUser, setRoomAndUser] = useState({
+    username: null,
+    roomName: null,
+    roomId: null,
+    socket,
+  });
 
-  function joinRoom() {
-    if (username !== "" && room !== "") {
-      socket.emit("join_room", room);
-      setShowChat(true);
-    }
+  function goHome() {
+    console.log("hora");
+    navigate("/");
   }
-  console.log(socket);
+
   return (
-    <div className="App">
-      {!showChat ? (
-        <div className="joinChatContainer">
-          <h3>Join a chat</h3>
-          <input
-            type="text"
-            placeholder="John...."
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
-          />
-          <input
-            type="text"
-            placeholder="Room Id...."
-            onChange={(e) => {
-              setRoom(e.target.value);
-            }}
-          />
-          <button onClick={joinRoom}>Join a room</button>
-        </div>
-      ) : (
-        <Chat socket={socket} username={username} room={room} />
-      )}
+    <div className="h-screen w-screen font-nunito bg-backGround">
+      <div
+        className="flex absolute left-0 top-0 cursor-pointer"
+        onClick={goHome}
+      >
+        <h1 className="headerText">The</h1>
+        <h1 className="headerText text-primary">Chat</h1>
+        <h1 className="headerText">App</h1>
+      </div>
+      <roomAndUserCtx.Provider value={{ roomAndUser, setRoomAndUser }}>
+        <>{routes}</>
+      </roomAndUserCtx.Provider>
     </div>
   );
 }

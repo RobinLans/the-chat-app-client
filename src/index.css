@@ -1,3 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.headerText {
+  @apply text-5xl xl:text-7xl font-semibold mx-1;
+}
+
+.buttons {
+  @apply border-8 text-primary text-xl font-semibold border-primary w-20 h-12 my-2  hover:bg-secondary  active:bg-primary hover:text-white;
+}
+
+.chatMenuTextBlack {
+  @apply text-xl font-bold mx-1;
+}
+.chatMenuTextPink {
+  @apply text-xl font-bold text-primary mx-1;
+}
+
+.CMcontainers {
+  @apply mx-2 w-72 flex flex-col items-center;
+}
+
+.CMBoxes {
+  @apply w-full h-96 border-black border-veryThick;
+}
