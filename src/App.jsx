@@ -5,8 +5,8 @@ import routes from "./routes";
 import io from "socket.io-client";
 
 const socket = io.connect(
-  // "http://localhost:4000"
-  "https://the-chat-app-dj.herokuapp.com/"
+  "http://localhost:4000"
+  // "https://the-chat-app-dj.herokuapp.com/"
 );
 
 function App() {

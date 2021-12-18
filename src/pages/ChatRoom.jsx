@@ -11,6 +11,16 @@ function ChatRoom() {
   const [messageList, setMessageList] = useState([]);
   const [users, setUsers] = useState([]);
 
+  window.onbeforeunload = (event) => {
+    const e = event || window.event;
+    // Cancel the event
+    e.preventDefault();
+    if (e) {
+      e.returnValue = ""; // Legacy method for cross browser support
+    }
+    return ""; // Legacy method for cross browser support
+  };
+
   async function sendMessage() {
     if (currentMessage === "") return;
     const messageData = {
@@ -99,11 +109,11 @@ function ChatRoom() {
             Send
           </button>
         </div>
-        {/* <div className="h-full w-1/4 border-l-extraThick border-black p-2 overflow-auto">
+        <div className="h-full w-1/4 border-l-extraThick border-black p-2 overflow-auto">
           {users.map((user) => (
             <p className="text-2xl font-semibold my-2">{user}</p>
           ))}
-        </div> */}
+        </div>
       </div>
     </div>
   );
